@@ -11,6 +11,13 @@
 //As our previous Battleship, the winner is the player that hits the 4 opponent's ships first
 //one more Thing create a 'reset' and a 'new game' buttons as childs of the element with the id 'buttons'. the reset button has to start the game again and the new game create a new game with new players and a new random board.
 
+ let opponentPlayer;
+ let currentPlayer;
+ //let turnPlayer;
+ let count=0;
+
+
+
 const board_Player1 = document.getElementById('board_player1');
 
 for (var x = 0; x < 4; x++) {
@@ -38,8 +45,37 @@ for (var x = 0; x < 4; x++) {
             alert("hit");
             shipsP1.textContent -= 1;
             player1.gameBoard[coordX][coordY] = 0;
-            console.log(player1.gameBoard[coordX][coordY])
+            //console.log(player1.gameBoard[coordX][coordY])
              }
+             turnPlayer = document.getElementById('turn_player');//puts opponentPlayer name in turn slot
+console.log(count)
+              //while(currentPlayer){
+             if(+(count%2)===0){
+               currentPlayer = player2.name;
+               opponentPlayer = player1.name;
+                turnPlayer.textContent = opponentPlayer;
+                 //board_Player2.style.display = 'none';
+               //alert(`Your turn ${player1.name}`);
+               //break;
+
+               console.log(currentPlayer)
+             } else{
+               opponentPlayer = player2.name;
+               //alert(`Your turn ${player1.name}`);
+                turnPlayer.textContent = currentPlayer
+                 //board_Player2.style.display = 'block';
+             }count++;
+             win();
+           //}
+
+
+
+
+
+
+
+               console.log(turn_player, currentPlayer, opponentPlayer)
+             })
             //if ('clicked'){//or if currentPlayer clicks opponentPlayer.gameBoard then -1
             //cell='disable'
 
@@ -51,7 +87,7 @@ for (var x = 0; x < 4; x++) {
           //   alert(`${player2.name} you already sank this ship`)
 
             //playerSwitch()//MJF: thought if the functions were created on the outside i could just call them in the event handler and it would work but its not.
-      });
+
 
       li.appendChild(cell); //adding each cell into the row number x
     }
@@ -88,9 +124,27 @@ for (var x = 0; x < 4; x++) {
             shipsP2.textContent -= 1;
             player2.gameBoard[coordX][coordY] = 0;
           }
+          turnPlayer = document.getElementById('turn_player');//puts opponentPlayer name in turn slot
+console.log(count)
+          //while(currentPlayer){
+          if(+(count%2)===0){
+            currentPlayer = player1.name;
+            opponentPlayer = player2.name;
+             turnPlayer.textContent = opponentPlayer
+              //board_Player1.style.display = 'none';
+            //alert(`Your turn ${player1.name}`);
 
+            console.log(currentPlayer)
+          } else{
+            opponentPlayer = player1.name;
+            //alert(`Your turn ${player1.name}`);
+             turnPlayer.textContent = currentPlayer
+               //board_Player1.style.display = 'block';
+          }count++;
+        //}
+          //win()
 
-
+          console.log(turnPlayer, currentPlayer, opponentPlayer)
 
       });
 
@@ -122,11 +176,6 @@ let player2 = {
 
 }
 
-// cell;//MJF: thought if i made the variable global that other functions can access but not working.
-// let coordX = cell.textContent.slice(0,1);//breaks up the coordinates in each cell one for x and y
-// let coordY = cell.textContent.slice(2,3);
-// console.log(coordX, coordY)
-
 //insert the value of the name prompt to the id 'name_player1'
 let p1 = document.querySelector('#name_player1')//.value = player1;
 p1.textContent = player1.name
@@ -144,98 +193,134 @@ p1.textContent = player1.name
   shipsP2.textContent = player2.shipCount;
 
  //set up the ships
-function boardPlacement () {
-    let ships=0;
-    let xPos;
-    let yPos;
+ function boardPlacement () {
+   let ships=0;
+   let xPos;
+   let yPos;
 
-      while(ships < player1.shipCount){
-        xPos = Math.floor(Math.random() * 4);
-        yPos = Math.floor(Math.random() * 4);
-          if(parseInt(player1.gameBoard[xPos][yPos])!==1){
-            player1.gameBoard[xPos][yPos] = 1;
-            ships++;
-          }
-        }
-          ships=0;
-          while(ships < player2.shipCount){
-            xPos = Math.floor(Math.random() * 4);
-            yPos = Math.floor(Math.random() * 4);
-              if(parseInt(player2.gameBoard[xPos][yPos])!==1){
-                player2.gameBoard[xPos][yPos] = 1;
-                ships++;
-              }
+   while(ships < player1.shipCount){
+     xPos = Math.floor(Math.random() * 4);
+     yPos = Math.floor(Math.random() * 4);
+     if(parseInt(player1.gameBoard[xPos][yPos])!==1){
+       player1.gameBoard[xPos][yPos] = 1;
+       ships++;
+     }
+   }
+   ships=0;
+   while(ships < player2.shipCount){
+     xPos = Math.floor(Math.random() * 4);
+     yPos = Math.floor(Math.random() * 4);
+     if(parseInt(player2.gameBoard[xPos][yPos])!==1){
+       player2.gameBoard[xPos][yPos] = 1;
+       ships++;
+     }
 
-        }
+   }
+   console.log(player1.gameBoard,player2.gameBoard) ;
+ }boardPlacement();
 
-}boardPlacement();
 
-let opponentPlayer;
-let currentPlayer;
-let count=0
+//let count=0
 
 // function playerSwitch (){//MJF:when uncommented, this function is coming up before the board is formed.
-//   while(true){
-// //currentPlayer.textContent = turnPlayer
-//   if(+(count%2)==0){
-//     currentPlayer = player1.name;
-//     opponentPlayer = player2.name;
+//   while(board_Player2){
+//     //currentPlayer.textContent = turnPlayer
+//     if(+(count%2)===0){
+//       currentPlayer = player1.name;
+//       opponentPlayer = player2.name;
 //
-//     alert(`Your turn ${player2.name}`);
-// } else{
-//     opponentPlayer = player1.name;
+//       alert(`Your turn ${player2.name}`);
+//       //break;
+//     } else{
+//       opponentPlayer = player1.name;
 //       alert(`Your turn ${player1.name}`);
-// }
+//     }
+//
+//   }
 //
 // }
-//
-// }playerSwitch()
-//
-// turnPlayer = 0;
+
+
+// let turnPlayer;
 // function turn (){
-//   let turnPlayer = document.getElementById('turn_player');
+//   turnPlayer = document.getElementById('turn_player');
+//   turnPlayer.textContent
 //
 //   if (turnPlayer === currentPlayer){
-//   turnPlayer.textContent;//MJF: thought the value would display but it's not.
-//   console.log(turnPlayer, 'yo')
-// }else if(turnPlayer === opponentPlayer){
-//   turnPlayer.textContent;
-// }
+//     turnPlayer.textContent;//MJF: thought the value would display but it's not.
+//     console.log('yo')
+//   }else if(turnPlayer === opponentPlayer){
+//     turnPlayer.textContent;
+//   }
 //
-//   console.log(turnPlayer, 'happy')
+//   console.log(turnPlayer)
 // }turn()
 
 
 //have a function to declare the winner(look at the other version)
+let winner;
 function win(){//MJF: not sure why this would not work
-if(shipsP1.textContent===0){
-  alert(`${player2.name} is the winner!`);
-}else if(shipsP2.textContent===0){
-  alert(`${player1.name} is the winner!`);
-}
+console.log('Win function running!')
 
-}win();
+if(parseInt(shipsP1.textContent)==0){//maybe not working bc it thinks it is a string so will never happen
+  winner = currentPlayer
+  //alert(`${player2.name} is the winner!`);
+}else if(parseInt(shipsP2.textContent)==0){
+  //alert(`${player1.name} is the winner!`);
+  winner = currentPlayer
+}//else{
+//   break;
+// }
+alert (`The winner is ${winner}`)
+console.log(typeof shipsP1.textContent)
+}//win()
 
 
 //reset and new game buttons
 function reSet(){//try to get the reset button to connect to the Dom by connecting it to the function with the boardPlacement
-let resetBtn = document.createElement('button')
-let button = document.getElementById('buttons').appendChild(resetBtn)
-resetBtn.textContent = "Reset"
+  let resetBtn = document.createElement('button')
+  let button = document.getElementById('buttons').appendChild(resetBtn)
+  resetBtn.textContent = "Reset"
+  board_Player1.style.display ='block'
+  board_Player2.style.display ='block'
+  resetBtn.addEventListener("click", () => {
+    player1.gameBoard = [[0,0,0,0],
+    [0,0,0,0],
+    [0,0,0,0],
+    [0,0,0,0]];
 
-button.addEventListener("click", boardPlacement);//MJF: i looked this up but it's not reseting the game when i call this function
- player1.gameboard;
- player2.gameboard;
+    player2.gameBoard = [[0,0,0,0],
+    [0,0,0,0],
+    [0,0,0,0],
+    [0,0,0,0]];
+
+    shipsP1.textContent = 4;
+    shipsP2.textContent = 4;
+
+    const boardSq = document.getElementsByClassName('square')
+    for(i=0; i<boardSq.length; i++){
+      boardSq[i].style.background ="black";
+    }
+    console.log(boardSq)
+
+
+    boardPlacement()
+  });
+
+//MJF: i looked this up but it's not reseting the game when i call this function
+
+
+//button.addEventListener('click', ()=> {console.log(boardPlacement)})
 
 }reSet()
 
 
 //figure out how to use the event listener to start the game from very begining with name prompts.
 function reStart(){
-let newGameBtn = document.createElement('button')
-let button = document.getElementById('buttons').appendChild(newGameBtn)
-newGameBtn.textContent = "New Game"
-button.addEventListener('click', ()=> {
-
-})
+  let newGameBtn = document.createElement('button')
+  let button = document.getElementById('buttons').appendChild(newGameBtn)
+  newGameBtn.textContent = "New Game"
+  newGameBtn.addEventListener('click', ()=> {
+    location.reload();
+  })
 }reStart()
