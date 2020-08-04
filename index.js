@@ -175,6 +175,9 @@ let currentPlayer;
 let count=0
 
 // function playerSwitch (){//MJF:when uncommented, this function is coming up before the board is formed.
+// JTK note - its because your while condition is while(true) - it will keep evaluating forever if the loop is set up like that
+// while(< whatever is in here evaluates to true or false. If true, the loop runs. If not, it doesn't. So if you put "true" in here it will always run>)
+
 //   while(true){
 // //currentPlayer.textContent = turnPlayer
 //   if(+(count%2)==0){
@@ -208,17 +211,21 @@ let count=0
 
 //have a function to declare the winner(look at the other version)
 function win(){//MJF: not sure why this would not work
-if(shipsP1.textContent===0){
-  alert(`${player2.name} is the winner!`);
-}else if(shipsP2.textContent===0){
-  alert(`${player1.name} is the winner!`);
-}
+  console.log('Win function running!')
+  console.log(typeof shipsP1.textContent)
+  // JTK note on this ^^: I'm adding that to make sure it isn't coming back as a string. Typeof will tell you if it is a string or number
 
-}win();
+  if(shipsP1.textContent===0){
+    alert(`${player2.name} is the winner!`);
+  }else if(shipsP2.textContent===0){
+    alert(`${player1.name} is the winner!`);
+  }
+} win(); // JTK note: should this be called here, or should this be called after each turn to check for a win condition?
 
 
 //reset and new game buttons
 function reSet(){//try to get the reset button to connect to the Dom by connecting it to the function with the boardPlacement
+console.log('ReSet function running!')
 let resetBtn = document.createElement('button')
 let button = document.getElementById('buttons').appendChild(resetBtn)
 resetBtn.textContent = "Reset"
@@ -227,15 +234,37 @@ button.addEventListener("click", boardPlacement);//MJF: i looked this up but it'
  player1.gameboard;
  player2.gameboard;
 
-}reSet()
+} reSet() // JTK note - right now this is also getting called right after you declare it... probably needs to be only called when they push a button
 
 
 //figure out how to use the event listener to start the game from very begining with name prompts.
 function reStart(){
+console.log('Restart function running!')
 let newGameBtn = document.createElement('button')
 let button = document.getElementById('buttons').appendChild(newGameBtn)
 newGameBtn.textContent = "New Game"
 button.addEventListener('click', ()=> {
 
 })
-}reStart()
+}reStart() // JTK note - same thing, probably want to call this elsewhere right now it would be resetting your board after you
+
+
+
+/*
+
+One other note from me - I think a lot of your logic is in the ballpark of where it needs to be actually. I'm just seeing that there are
+connections missing between things. That's OK! That's a hard part.
+
+I think your BIGGEST challenge is figuring out the timing for your reset, restart, and turn functions
+
+In this type of game, I would recommend taking a step back: what piece of information do you have right now that tells you someone took a turn? A click
+
+It gets a little more complicated than that because you need to keep track of the current player and what board they are allowed to click on, but that is the
+biggest hint I would give you. If you structure it as 1 click (on a valid spot) = one turn, I think that's the first step
+
+Second: When should you evaluate your win logic? Maybe on each turn, since the score could have changed every time a turn occurs...
+
+I know your other reviewer recommended a 1:1 session with Tom and that is a good idea too but I wanted to give you a couple notes and I will also be having my session tomorrow
+and we can take a look at this! 
+
+*/
