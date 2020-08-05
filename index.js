@@ -41,20 +41,22 @@ for (var x = 0; x < 4; x++) {
           //console.log(coordX, coordY)
           player1.gameBoard[coordX][coordY]//connects the cell coordinates to the random ship placements in the boardPlacement function.
           //console.log(player1.gameBoard[coordX][coordY])
-          if(player1.gameBoard[coordX][coordY]===1){//if the cell click matches the random ship placement then it will be a hit.
+          if(player1.gameBoard[coordX][coordY]===1) {//if the cell click matches the random ship placement then it will be a hit.
             alert("hit");
             shipsP1.textContent -= 1;
             player1.gameBoard[coordX][coordY] = 0;
             //console.log(player1.gameBoard[coordX][coordY])
-             }
+          }
              turnPlayer = document.getElementById('turn_player');//puts opponentPlayer name in turn slot
 console.log(count)
               //while(currentPlayer){
              if(+(count%2)===0){
                currentPlayer = player2.name;
                opponentPlayer = player1.name;
-                turnPlayer.textContent = opponentPlayer;
-                 //board_Player2.style.display = 'none';
+               turnPlayer.textContent = opponentPlayer;
+               //
+               board_Player2.style.display = 'none';
+               board_Player1.style.display = 'block';
                //alert(`Your turn ${player1.name}`);
                //break;
 
@@ -63,18 +65,15 @@ console.log(count)
                opponentPlayer = player2.name;
                //alert(`Your turn ${player1.name}`);
                 turnPlayer.textContent = currentPlayer
-                 //board_Player2.style.display = 'block';
-             }count++;
+                board_Player2.style.display = 'block';
+                board_Player1.style.display = 'none';
+             }
+             count++;
              win();
            //}
 
+           console.log(`This is turn count ${count}, currentPlayer ${currentPlayer}, opponent ${opponentPlayer}`)
 
-
-
-
-
-
-               console.log(turn_player, currentPlayer, opponentPlayer)
              })
             //if ('clicked'){//or if currentPlayer clicks opponentPlayer.gameBoard then -1
             //cell='disable'
@@ -125,26 +124,27 @@ for (var x = 0; x < 4; x++) {
             player2.gameBoard[coordX][coordY] = 0;
           }
           turnPlayer = document.getElementById('turn_player');//puts opponentPlayer name in turn slot
-console.log(count)
+          console.log(count)
           //while(currentPlayer){
-          if(+(count%2)===0){
+          if(count % 2 === 1){
             currentPlayer = player1.name;
             opponentPlayer = player2.name;
-             turnPlayer.textContent = opponentPlayer
-              //board_Player1.style.display = 'none';
+            turnPlayer.textContent = opponentPlayer
+            board_Player1.style.display = 'none';
+            board_Player2.style.display = 'block';
             //alert(`Your turn ${player1.name}`);
 
             console.log(currentPlayer)
           } else{
             opponentPlayer = player1.name;
             //alert(`Your turn ${player1.name}`);
-             turnPlayer.textContent = currentPlayer
-               //board_Player1.style.display = 'block';
+            turnPlayer.textContent = currentPlayer
+            board_Player1.style.display = 'block';
+            board_Player2.style.display = 'none';
           }count++;
+          console.log(`This is turn count ${count}, currentPlayer ${currentPlayer}, opponent ${opponentPlayer}`)
         //}
           //win()
-
-          console.log(turnPlayer, currentPlayer, opponentPlayer)
 
       });
 
@@ -175,6 +175,29 @@ let player2 = {
 [0,0,0,0]]
 
 }
+
+/*
+
+JTK
+
+A couple other things - I'm noticing we had both players set to look at count if count % 2 == 0 which means they were both trying to go on even numbered
+turns...I changed that so one of them is count % 2 === 1 so now it is even/odd turns
+
+Second
+
+I'm seeing the current player and opponent are undefined when the game begins. I recommend setting the current player and opponent player -
+this part of the code, where I'm writing you this comment right now, is a perfectly ok place for it
+
+Last - although there is probably more I don't want to do too much stuff and get in the way of the learning process. You might want to disable
+player 2s board from the start
+
+Last but not least - I realized that we weren't undoing the display setting on the other persons board...so like if it was person 1s turn,
+we were changing the display settings on person ones board, but we weren't changing them on person two's board and we needed to so I added those
+lines immediately under yours... and that's why we were seeing some weird behavior
+if you start your game, and assume you are player one and first click on player twos board, you should start seeing the correct board being
+disabled. 
+
+*/
 
 //insert the value of the name prompt to the id 'name_player1'
 let p1 = document.querySelector('#name_player1')//.value = player1;
