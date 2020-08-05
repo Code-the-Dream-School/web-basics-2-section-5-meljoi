@@ -10,11 +10,75 @@
 //in the index.html file you are going to find 4 more ids: 'name_player1' , 'name_player2' , 'ships_player1' , 'ships_player2'. We want to see the information of each player in the respective elements
 //As our previous Battleship, the winner is the player that hits the 4 opponent's ships first
 //one more Thing create a 'reset' and a 'new game' buttons as childs of the element with the id 'buttons'. the reset button has to start the game again and the new game create a new game with new players and a new random board.
+//objects for each player
+let player1 = {
+  name:prompt("Player1, please enter your name"),
+  shipCount:4,
+  gameBoard: [[0,0,0,0],
+[0,0,0,0],
+[0,0,0,0],
+[0,0,0,0]]
+
+
+}
+
+let player2 = {
+  name:prompt("Player2, please enter your name"),
+  shipCount:4,
+  gameBoard:[[0,0,0,0],
+[0,0,0,0],
+[0,0,0,0],
+[0,0,0,0]]
+
+}
+//insert the value of the name prompt to the id 'name_player1'
+let p1 = document.querySelector('#name_player1')//.value = player1;
+p1.textContent = player1.name
+
+//place number of remaining ships in the id ships_player1
+ let shipsP1 = document.getElementById('ships_player1')
+ shipsP1.textContent = player1.shipCount;
+console.log(shipsP1.textContent + 'hey')
+ //insert the value of the name prompt to the id 'name_player2'
+ let p2 = document.querySelector('#name_player2')
+ p2.textContent = player2.name
+
+ //place number of remaining ships in the id ships_player2
+  let shipsP2 = document.getElementById('ships_player2')
+  shipsP2.textContent = player2.shipCount;
+
+  //set up the ships
+  function boardPlacement () {
+    let ships=0;
+    let xPos;
+    let yPos;
+
+    while(ships < player1.shipCount){
+      xPos = Math.floor(Math.random() * 4);
+      yPos = Math.floor(Math.random() * 4);
+      if(parseInt(player1.gameBoard[xPos][yPos])!==1){
+        player1.gameBoard[xPos][yPos] = 1;
+        ships++;
+      }
+    }
+    ships=0;
+    while(ships < player2.shipCount){
+      xPos = Math.floor(Math.random() * 4);
+      yPos = Math.floor(Math.random() * 4);
+      if(parseInt(player2.gameBoard[xPos][yPos])!==1){
+        player2.gameBoard[xPos][yPos] = 1;
+        ships++;
+      }
+
+    }
+    console.log(player1.gameBoard,player2.gameBoard);
+  }boardPlacement();
+
 
  let opponentPlayer;
  let currentPlayer;
- //let turnPlayer;
  let count=0;
+ board_player2.style.display = 'none'
 
 
 
@@ -39,54 +103,67 @@ for (var x = 0; x < 4; x++) {
            let coordX = cell.textContent.slice(0,1);//breaks up the coordinates in each cell one for x and y
            let coordY = cell.textContent.slice(2,3);
           //console.log(coordX, coordY)
-          player1.gameBoard[coordX][coordY]//connects the cell coordinates to the random ship placements in the boardPlacement function.
+          //player1.gameBoard[coordX][coordY]//connects the cell coordinates to the random ship placements in the boardPlacement function.
           //console.log(player1.gameBoard[coordX][coordY])
           if(player1.gameBoard[coordX][coordY]===1){//if the cell click matches the random ship placement then it will be a hit.
             alert("hit");
-            shipsP1.textContent -= 1;
+            cell.style.background = "orange";
+            //shipsP1.textContent -= 1;
+            player1.shipCount -= 1;
+            shipsP1.textContent =  player1.shipCount;
             player1.gameBoard[coordX][coordY] = 0;
             //console.log(player1.gameBoard[coordX][coordY])
              }
+
              turnPlayer = document.getElementById('turn_player');//puts opponentPlayer name in turn slot
-console.log(count)
-              //while(currentPlayer){
-             if(+(count%2)===0){
-               currentPlayer = player2.name;
-               opponentPlayer = player1.name;
-                turnPlayer.textContent = opponentPlayer;
-                 //board_Player2.style.display = 'none';
-               //alert(`Your turn ${player1.name}`);
-               //break;
 
-               console.log(currentPlayer)
+
+             if(+(count%2)!==0){
+               currentPlayer = player2;
+               //console.log(currentPlayer.name + "player2 is current player");
+               opponentPlayer = player1;
+               //console.log(opponentPlayer.name + 'player1 is opponent player')
+                turnPlayer.textContent = currentPlayer.name;
+                if(board_Player2.style.display = 'block'){
+                board_Player2.style.display = 'none';
+                board_Player1.style.display = 'block';
+              }
+
+               count++;
+
+
              } else{
-               opponentPlayer = player2.name;
-               //alert(`Your turn ${player1.name}`);
-                turnPlayer.textContent = currentPlayer
-                 //board_Player2.style.display = 'block';
-             }count++;
-             win();
-           //}
+              currentPlayer = player1;
+               opponentPlayer = player2;
+               //console.log(opponentPlayer.name + "player2 is the opponent player ");
+                turnPlayer.textContent = currentPlayer.name
+                 if(board_Player1.style.display = 'block'){
+                 board_Player1.style.display = 'none';
+                 board_Player2.style.display = 'block';
+                }
+                 count++;
+             }
 
+             if(parseInt(player1.shipCount)===0){//maybe not working bc it thinks it is a string so will never happen
+             //console.log(parseInt(player1.shipCount)+ "Player1shipCount is zero here")
+              // winner = currentPlayer
+               //alert(`${player2.name} is the winner!`);
+               turnPlayer.textContent = `${player2.name} is the winner!`
+             }else if(parseInt(player2.shipCount)===0){
+               //console.log(parseInt(player2.shipCount), 'ships')
+               //alert(`${player1.name} is the winner!`);
+               turnPlayer.textContent = `${player1.name} is the winner!`
+               //winner = currentPlayer
+             }
 
+               //winner = currentPlayer
 
+             //alert ("The winner is" + winner.name)
+             //console.log(typeof player2.shipCount)
+           //win()
 
-
-
-
-               console.log(turn_player, currentPlayer, opponentPlayer)
+               //console.log(turn_player, currentPlayer, opponentPlayer)
              })
-            //if ('clicked'){//or if currentPlayer clicks opponentPlayer.gameBoard then -1
-            //cell='disable'
-
-            //shipsP1 ++;
-            //cell('disabled', true)//trying to disable the button after being clicked
-            //$('#square').attr("disabled", true);
-          //}
-          // if (player1.gameBoard ==0){//need to put if clicked twice
-          //   alert(`${player2.name} you already sank this ship`)
-
-            //playerSwitch()//MJF: thought if the functions were created on the outside i could just call them in the event handler and it would work but its not.
 
 
       li.appendChild(cell); //adding each cell into the row number x
@@ -117,34 +194,62 @@ for (var x = 0; x < 4; x++) {
           cell.style.background ="purple"; //with this propertie you can change the background color of the clicked cell. try comment the line bellow and uncomment this line. Do not forget to save this file and refresh the borwser to see the changes
           let coordX = cell.textContent.slice(0,1)//breaks up the coordinates in each cell one for x and y
           let coordY = cell.textContent.slice(2,3)
-          player2.gameBoard[coordX][coordY]//connects the cell coordinates to the random ship placements in the boardPlacement function.
-          console.log(player2.gameBoard[coordX][coordY])
+          //player2.gameBoard[coordX][coordY]//connects the cell coordinates to the random ship placements in the boardPlacement function.
+          //console.log(player2.gameBoard[coordX][coordY])
           if(player2.gameBoard[coordX][coordY]===1){//if the cell click matches the random ship placement then it will be a hit.
             alert("hit");
-            shipsP2.textContent -= 1;
+            cell.style.background = "orange";
+            //shipsP2.textContent -= 1;
+            player2.shipCount -= 1;
+            shipsP2.textContent =  player2.shipCount;
             player2.gameBoard[coordX][coordY] = 0;
           }
-          turnPlayer = document.getElementById('turn_player');//puts opponentPlayer name in turn slot
-console.log(count)
-          //while(currentPlayer){
-          if(+(count%2)===0){
-            currentPlayer = player1.name;
-            opponentPlayer = player2.name;
-             turnPlayer.textContent = opponentPlayer
-              //board_Player1.style.display = 'none';
-            //alert(`Your turn ${player1.name}`);
+           turnPlayer = document.getElementById('turn_player');//puts opponentPlayer name in turn slot
 
-            console.log(currentPlayer)
-          } else{
-            opponentPlayer = player1.name;
-            //alert(`Your turn ${player1.name}`);
-             turnPlayer.textContent = currentPlayer
-               //board_Player1.style.display = 'block';
-          }count++;
-        //}
-          //win()
 
-          console.log(turnPlayer, currentPlayer, opponentPlayer)
+           if(+(count%2)===0){
+             currentPlayer = player1;
+             //console.log(currentPlayer.name + 'player1 is the current player ')
+             opponentPlayer = player2;
+             //console.log(opponentPlayer.name + 'player2 is the opponent player')
+              turnPlayer.textContent = currentPlayer.name;
+               if(board_Player1.style.display = 'block')
+               {
+                 board_Player1.style.display = 'none';
+                 board_Player2.style.display = 'block';
+               }
+             count++;
+
+           } else{
+             currentPlayer = player2;
+             opponentPlayer = player1;
+             //console.log(opponentPlayer.name + 'player1 is the opponent player')
+              turnPlayer.textContent = currentPlayer.name;
+               if(board_Player2.style.display = 'block')
+               {
+                 board_Player2.style.display = 'none';
+                 board_Player1.style.display = 'block';
+               }
+               count++;
+           }
+
+           if(parseInt(player1.shipCount)===0){
+           //console.log(parseInt(player1.shipCount), 'ship')
+             //winner = currentPlayer
+             //alert(`${player2.name} is the winner!`);
+             turnPlayer.textContent = `${player2.name} is the winner!`
+           }else if(parseInt(player2.shipCount)===0){
+             //console.log(parseInt(player2.shipCount), 'ships')
+             //alert(`${player1.name} is the winner!`);
+             turnPlayer.textContent = `${player1.name} is the winner!`
+             //winner = currentPlayer
+           }
+          //alert ("The winner is" + winner.name)
+          //console.log(typeof player2.shipCount)
+
+
+
+          //console.log(turnPlayer, currentPlayer, opponentPlayer)
 
       });
 
@@ -154,135 +259,13 @@ console.log(count)
      board_Player2.appendChild(li); //adding each row into the board
 }
 
-//objects for each player
-let player1 = {
-  name:prompt("Player1, please enter your name"),
-  shipCount:4,
-  gameBoard: [[0,0,0,0],
-[0,0,0,0],
-[0,0,0,0],
-[0,0,0,0]]
-
-
-}
-
-let player2 = {
-  name:prompt("Player2, please enter your name"),
-  shipCount:4,
-  gameBoard:[[0,0,0,0],
-[0,0,0,0],
-[0,0,0,0],
-[0,0,0,0]]
-
-}
-
-//insert the value of the name prompt to the id 'name_player1'
-let p1 = document.querySelector('#name_player1')//.value = player1;
-p1.textContent = player1.name
-
-//place number of remaining ships in the id ships_player1
- let shipsP1 = document.getElementById('ships_player1')
- shipsP1.textContent = player1.shipCount;
-
- //insert the value of the name prompt to the id 'name_player2'
- let p2 = document.querySelector('#name_player2')
- p2.textContent = player2.name
-
- //place number of remaining ships in the id ships_player2
-  let shipsP2 = document.getElementById('ships_player2')
-  shipsP2.textContent = player2.shipCount;
-
- //set up the ships
- function boardPlacement () {
-   let ships=0;
-   let xPos;
-   let yPos;
-
-   while(ships < player1.shipCount){
-     xPos = Math.floor(Math.random() * 4);
-     yPos = Math.floor(Math.random() * 4);
-     if(parseInt(player1.gameBoard[xPos][yPos])!==1){
-       player1.gameBoard[xPos][yPos] = 1;
-       ships++;
-     }
-   }
-   ships=0;
-   while(ships < player2.shipCount){
-     xPos = Math.floor(Math.random() * 4);
-     yPos = Math.floor(Math.random() * 4);
-     if(parseInt(player2.gameBoard[xPos][yPos])!==1){
-       player2.gameBoard[xPos][yPos] = 1;
-       ships++;
-     }
-
-   }
-   console.log(player1.gameBoard,player2.gameBoard) ;
- }boardPlacement();
-
-
-//let count=0
-
-// function playerSwitch (){//MJF:when uncommented, this function is coming up before the board is formed.
-//   while(board_Player2){
-//     //currentPlayer.textContent = turnPlayer
-//     if(+(count%2)===0){
-//       currentPlayer = player1.name;
-//       opponentPlayer = player2.name;
-//
-//       alert(`Your turn ${player2.name}`);
-//       //break;
-//     } else{
-//       opponentPlayer = player1.name;
-//       alert(`Your turn ${player1.name}`);
-//     }
-//
-//   }
-//
-// }
-
-
-// let turnPlayer;
-// function turn (){
-//   turnPlayer = document.getElementById('turn_player');
-//   turnPlayer.textContent
-//
-//   if (turnPlayer === currentPlayer){
-//     turnPlayer.textContent;//MJF: thought the value would display but it's not.
-//     console.log('yo')
-//   }else if(turnPlayer === opponentPlayer){
-//     turnPlayer.textContent;
-//   }
-//
-//   console.log(turnPlayer)
-// }turn()
-
-
-//have a function to declare the winner(look at the other version)
-let winner;
-function win(){//MJF: not sure why this would not work
-console.log('Win function running!')
-
-if(parseInt(shipsP1.textContent)==0){//maybe not working bc it thinks it is a string so will never happen
-  winner = currentPlayer
-  //alert(`${player2.name} is the winner!`);
-}else if(parseInt(shipsP2.textContent)==0){
-  //alert(`${player1.name} is the winner!`);
-  winner = currentPlayer
-}//else{
-//   break;
-// }
-alert (`The winner is ${winner}`)
-console.log(typeof shipsP1.textContent)
-}//win()
-
 
 //reset and new game buttons
-function reSet(){//try to get the reset button to connect to the Dom by connecting it to the function with the boardPlacement
+function reSet(){
   let resetBtn = document.createElement('button')
   let button = document.getElementById('buttons').appendChild(resetBtn)
   resetBtn.textContent = "Reset"
-  board_Player1.style.display ='block'
-  board_Player2.style.display ='block'
+
   resetBtn.addEventListener("click", () => {
     player1.gameBoard = [[0,0,0,0],
     [0,0,0,0],
@@ -297,30 +280,29 @@ function reSet(){//try to get the reset button to connect to the Dom by connecti
     shipsP1.textContent = 4;
     shipsP2.textContent = 4;
 
-    const boardSq = document.getElementsByClassName('square')
-    for(i=0; i<boardSq.length; i++){
+    board_Player2.style.display ='none';
+    board_player1.style.display = 'block';
+
+    const turn = document.getElementById('turn_player');
+    turn.textContent = "";//sets the turn player back to and empty string
+
+    const boardSq = document.getElementsByClassName('square')//needed to call class name again and save under new var
+    for(i=0; i<boardSq.length; i++){//looping through the cells to return color to black
       boardSq[i].style.background ="black";
     }
-    console.log(boardSq)
+
+    boardPlacement();//resets the ships
+  })
 
 
-    boardPlacement()
-  });
+}reSet();
+console.log(reSet())
 
-//MJF: i looked this up but it's not reseting the game when i call this function
-
-
-//button.addEventListener('click', ()=> {console.log(boardPlacement)})
-
-}reSet()
-
-
-//figure out how to use the event listener to start the game from very begining with name prompts.
 function reStart(){
   let newGameBtn = document.createElement('button')
   let button = document.getElementById('buttons').appendChild(newGameBtn)
   newGameBtn.textContent = "New Game"
   newGameBtn.addEventListener('click', ()=> {
-    location.reload();
+    location.reload();//reloads the whole page from prompts
   })
-}reStart()
+}reStart();
